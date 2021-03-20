@@ -1,0 +1,641 @@
+.hero-box {
+  overflow: hidden;
+  height: inherit;
+  width: 100%;
+  position: relative;
+  transition: 0.5s;
+  text-align: center;
+  // background-image: radial-gradient(ellipse closest-side at 50% 50%, #393e44, #36383b 50%, #343233);
+  background: radial-gradient(circle closest-side at 50% 50%, rgb(57, 62, 68), rgb(54, 56, 59) 25%, rgb(52, 50, 51));
+  // background-repeat: no-repeat;
+
+  // 背景渐变
+  /*background: linear-gradient(223deg, #9ce8dd, #a993da, #F0CB54, #6D93A3);
+  background-size: 600% 600%;
+  animation: bg-generator 50s ease infinite;
+  @keyframes bg-generator {
+      0% {
+          background-position: 0% 84%
+      }
+
+      50% {
+          background-position: 100% 17%
+      }
+
+      100% {
+          background-position: 0% 84%
+      }
+  }*/
+
+  .hero-logo {
+    width: 100%;
+    height: 366px;
+    background-repeat: no-repeat;
+    // url(../../assets/images/index-logo.svg),
+    background-image: url("../../assets/images/index-portal-sides.svg");
+    background-position: center;
+    -webkit-user-select: none;
+    user-select: none;
+    @extend .scssTransformCenter;
+    z-index: 1;
+
+    .hero-logo-circles {
+      width: 366px;
+      height: 366px;
+      margin: auto;
+      position: relative;
+
+      .hero-logo-circle {
+        position: absolute;
+        left: 0;
+        top: 0;
+        animation: hero-logo-circle 1s linear infinite;
+        will-change: transform;
+      }
+
+      // .loop(10);
+      .hero-logo-circle:nth-child(1) {
+        animation-duration: 30s;
+      }
+
+      .hero-logo-circle:nth-child(2) {
+        animation-duration: 40s;
+      }
+
+      .hero-logo-circle:nth-child(3) {
+        animation-duration: 50s;
+      }
+
+      .hero-logo-circle:nth-child(4) {
+        animation-duration: 60s;
+      }
+
+      .hero-logo-circle:nth-child(5) {
+        animation-duration: 70s;
+      }
+
+      .hero-logo-circle:nth-child(6) {
+        animation-duration: 80s;
+      }
+
+      .hero-logo-circle:nth-child(7) {
+        animation-duration: 90s;
+      }
+
+      .hero-logo-circle:nth-child(8) {
+        animation-duration: 100s;
+      }
+
+      .hero-logo-circle:nth-child(9) {
+        animation-duration: 110s;
+      }
+
+      .hero-logo-circle:nth-child(10) {
+        animation-duration: 120s;
+      }
+    }
+
+  }
+
+  // 中心专辑图片
+  .hero-play-audio {
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    margin: auto;
+    width: 140px;
+    height: 140px;
+    z-index: 2;
+
+    .hero-play-album-name {
+      font-size: 14px;
+      color: #fff;
+      padding: 10px 0;
+    }
+
+    .hero-play-audios {
+      overflow: hidden;
+      display: block;
+      padding: 0;
+      border: 0;
+      margin: 0;
+      width: 140px;
+      height: 140px;
+      border-radius: 50%;
+    }
+
+    .audios-animation {
+      animation: hero-logo-circle 1s linear infinite;
+      will-change: transform;
+      animation-duration: 12s;
+    }
+  }
+
+  // 控制台
+  .hero-play-panel {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    // height: 65px;
+    z-index: 2;
+    // 播放时间
+    .hero-play-time {
+      padding: 0 15px;
+      height: 20px;
+      font-size: 12px;
+      color: #c7c7c7;
+      @extend .scssBoxFlexSB;
+
+      .hero-play-time-lyric {
+        font-size: 14px;
+      }
+    }
+
+    // 进度条
+    .hero-play-progress {
+      // padding: 1px 0;
+      margin: 1px 15px;
+      height: 3px;
+      background: #1e2833;
+      border-radius: 2px;
+      cursor: pointer;
+      position: relative;
+
+      > div {
+        width: 0;
+        height: 3px;
+        border-radius: 1px;
+        position: absolute;
+        top: 0;
+        left: 0;
+      }
+
+      // 音乐进度条
+      .hero-play-progress-bar {
+        background: #dda032;
+      }
+
+      // buffered 音乐缓冲
+      .hero-play-progress-buffered {
+        background: #434c56;
+      }
+    }
+
+    // 仪表盘
+    .hero-play-controls {
+      height: 20px;
+      padding: 10px 15px;
+      @extend .scssBoxFlexSB;
+
+      .hero-play-controls-left {
+        display: flex;
+
+        > div {
+          height: 20px;
+          //display: inline-block;
+          cursor: pointer;
+          background: url('../../assets/sprite_radio_play.png') no-repeat center;
+        }
+
+        // 播放暂停
+        .hero-play-controls-playpaused {
+          width: 12px;
+          margin-right: 18px;
+        }
+
+        .play {
+          background-position: 0 0;
+        }
+
+        .paused {
+          background-position: 0 -20px;
+        }
+
+        .hero-play-controls-playprev {
+          transform: rotate(180deg);
+          background-position: 0 -40px;
+          width: 15px;
+          margin-right: 18px;
+        }
+
+        .hero-play-controls-playnext {
+          background-position: 0 -40px;
+          width: 15px;
+          margin-right: 18px;
+        }
+
+        .hero-play-controls-playvoice {
+          width: 19px;
+          margin-right: 10px;
+        }
+
+        .voice-off {
+          background-position: 0 -218px;
+        }
+
+        .voice-on {
+          background-position: 0 -60px;
+        }
+
+        // 拖动的音轨range
+        .hero-play-controls-playrange {
+          background: rgba(211, 110, 45, .1);
+          margin: 10px 0;
+          width: 100px;
+          height: 2px;
+          position: relative;
+
+          .playrange-input {
+            position: absolute;
+            top: 0;
+            left: 0;
+            // background: rgba(211,110,45,.7);
+            background: -webkit-linear-gradient(rgba(211, 110, 45, .7), rgba(211, 110, 45, .7)) no-repeat;
+            background-size: 0 100%;
+          }
+
+          // 去除系统默认的样式
+          .iptrange[type=range] {
+            cursor: pointer;
+            -webkit-appearance: none;
+            width: 100px;
+            border-radius: 1px; /*这个属性设置使填充进度条时的图形为圆角*/
+          }
+
+          .iptrange[type=range]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+          }
+
+          // 给滑动轨道(track)添加样式
+          .iptrange[type=range]::-webkit-slider-runnable-track {
+            height: 2px;
+            border-radius: 1px; /*将轨道设为圆角的*/
+            // box-shadow: 0 1px 1px #def3f8, inset 0 .125em .125em #0d1112; /*轨道内置阴影效果*/
+          }
+
+          // 原始的控件获取到焦点时，会显示包裹整个控件的边框，所以还需要把边框取消。
+          .iptrange[type=range]:focus {
+            outline: none;
+          }
+
+          // 给滑块(thumb)添加样式
+          .iptrange[type=range]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            height: 10px;
+            width: 10px;
+            margin-top: -4px; /*使滑块超出轨道部分的偏移量相等*/
+            background: url('../../assets/sprite_radio_play.png') no-repeat center;
+            background-position: 0 -200px;
+            // border: solid 0.125em rgba(205, 224, 230, 0.5); /*设置边框*/
+            // box-shadow: 0 .125em .125em #3b4547; /*添加底部阴影*/
+          }
+
+        }
+      }
+
+      .hero-play-controls-right {
+        position: relative;
+
+        > div {
+          height: 20px;
+          display: inline-block;
+          cursor: pointer;
+          background: url('../../assets/sprite_radio_play.png') no-repeat center;
+          transition: .25s;
+        }
+
+        // 喜欢
+        .hero-play-controls-like {
+          width: 19px;
+          margin-right: 15px;
+
+          &.like {
+            background-position: 0 -100px;
+          }
+
+          &.hate {
+            background-position: 0 -80px;
+          }
+        }
+
+        // 讨厌
+        .hero-play-controls-hate {
+          width: 18px;
+          background-position: 0 -120px;
+          margin-right: 15px;
+        }
+
+        // 其他操作
+        .hero-play-controls-other {
+          width: 16px;
+          background-position: 0 -140px;
+        }
+
+        // 喜欢讨厌的歌曲列表
+        .hero-play-controls-more {
+          position: absolute;
+          right: 0;
+          bottom: 35px;
+          width: 200px;
+          height: 250px;
+          background: #fff;
+          border-radius: 3px;
+          overflow: hidden;
+
+          &::after {
+            // content: '';
+            display: block;
+            position: absolute;
+            bottom: -7.5px;
+            right: 0;
+
+            width: 0;
+            height: 0;
+            border-left: 7.5px solid transparent;
+            border-right: 7.5px solid transparent;
+            border-top: 10px solid #fff;
+          }
+
+          .hero-play-controls-more-tab {
+            @extend .scssBoxFlexSB;
+            transition: 0.25s;
+            border-bottom: 1px #f1f1f1 solid;
+            background: #f1f1f1;
+
+            .tab-list {
+              transition: 0.25s;
+              width: 50%;
+              padding: 5px 0;
+
+              &.activate {
+                background: #fff;
+              }
+            }
+          }
+
+          .hero-play-controls-more-list {
+            height: 220px;
+            overflow: auto;
+            font-size: 14px;
+
+            .like-or-hate-list {
+              @extend .scssBoxFlexSB;
+              padding: 5px 5px 5px 10px;
+              border-bottom: 1px #f1f1f1 solid;
+              cursor: default;
+
+              &:hover {
+                background: #eaeaea;
+                border-bottom: 1px #eaeaea solid;
+              }
+
+              .list-play {
+                text-overflow: ellipsis;
+                overflow: hidden;
+                white-space: nowrap;
+                text-align: left;
+                width: 175px;
+              }
+
+              .list-removed {
+                width: 25px;
+                background: url('../../assets/close-icon.png') no-repeat center;
+                background-size: 15px;
+              }
+            }
+
+            .like-or-hate-nodata {
+              line-height: 220px;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  // 手势
+  .hero-gesture {
+    position: relative;
+    z-index: 2;
+    -webkit-app-region: drag;
+
+    .hero-gesture-logo {
+      position: absolute;
+      top: 5px;
+      left: 5px;
+      width: 30px;
+      height: 30px;
+      background: url('../../assets/player1.png') no-repeat center;
+      background-size: 25px;
+      -webkit-app-region: no-drag;
+      // text-indent: 30px;
+      // line-height: 30px;
+      // font-size: 14px;
+      // color:#dda032;
+    }
+
+    .hero-gesture-box {
+      width: 100%;
+      height: 30px;
+      padding: 5px 0;
+      @extend .scssBoxFlexSB;
+
+
+      // 搜索框
+      .hero-gesture-search {
+        transition: .25s;
+        width: 300px;
+        position: absolute;
+        left: 0;
+        right: 0;
+        margin: auto;
+        z-index: 2;
+        // top: -35px;
+        -webkit-app-region: no-drag;
+
+        > div {
+          -webkit-app-region: no-drag;
+        }
+
+        .hero-gesture-search-ipt {
+          font-size: 14px;
+          width: 280px;
+          height: 30px;
+          line-height: 30px;
+          border: 0;
+          border-radius: 4px;
+          background: #fff url('../../assets/search.png') no-repeat 98%;
+          background-size: 18px;
+          // background: transparent;
+          padding: 0 10px 0 10px;
+          transition: .25s;
+          //opacity: 0.7;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+          //&:focus{
+          //    width: 280px;
+          //    opacity: 1;
+          //}
+        }
+
+        .border-ipt {
+          border-radius: 4px 4px 0 0;
+        }
+        .hero-gesture-search-box{
+          border: 1px red solid;
+        }
+        .hero-gesture-search-res {
+          width: 100%;
+          min-height: 30px;
+          max-height: 150px;
+          background: #fff;
+          border-radius: 0 0 3px 3px;
+          overflow: auto;
+          position: relative;
+          z-index: 1;
+          margin-top: 0;
+          border-top: 1px #f1f1f1 solid;
+
+          .res-list {
+            text-overflow: ellipsis;
+            overflow: hidden;
+            white-space: nowrap;
+            font-size: 14px;
+
+            text-align: left;
+            padding: 5px 5px 5px 10px;
+            border-bottom: 1px #f1f1f1 solid;
+            cursor: default;
+
+            &:hover {
+              background: #eaeaea;
+              border-bottom: 1px #eaeaea solid;
+            }
+          }
+        }
+      }
+
+    }
+
+    .hero-gesture-base {
+      position: absolute;
+      top: 5px;
+      width: 30px;
+      height: 30px;
+      -webkit-app-region: no-drag;
+      cursor: pointer;
+      transition: .25s;
+    }
+
+    .hero-gesture-closed {
+      right: 5px;
+      background: url('../../assets/close.svg') no-repeat center;
+      background-size: 20px;
+
+      &:hover {
+        transform: rotate(180deg);
+      }
+    }
+
+    .hero-gesture-hide {
+      right: 40px;
+      background: url('../../assets/reduce.png') no-repeat center;
+      background-size: 20px;
+
+      &:hover {
+        transform: rotate(-180deg);
+      }
+    }
+
+
+  }
+
+  .hero-play-canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    margin: auto;
+    // z-index: 3;
+    width: 100%;
+    height: 100%;
+  }
+
+  .dialog-info {
+    @extend .scssTransformCenter;
+    width: 250px;
+    // height: 100px;
+    overflow: hidden;
+    padding: 0 0 10px 0;
+    background: #fff;
+    border-radius: 4px;
+    text-align: center;
+
+    .dialog-info-tit {
+      font-size: 16px;
+      padding: 10px 0;
+    }
+
+    .dialog-info-btn {
+      transition: .2s;
+      cursor: pointer;
+      color: #0084ff;
+    }
+
+    .dialog-info-closed {
+
+    }
+  }
+
+  // 播放列表
+  &:hover .hero-box-list{
+    left: 0;
+  }
+  .hero-box-list{
+    width: 300px;
+    //background: #fff;
+    position: absolute;
+    top: 40px;
+    bottom: 70px;
+    left: -300px;
+    z-index: 3;
+    overflow: auto;
+    transition: 0.25s;
+    &::-webkit-scrollbar{
+      display: none;
+    }
+    &-li{
+      padding: 5px 0 5px 15px;
+      font-size: 15px;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      transition: 0.25s;
+      &:hover{
+        background: rgba(255,255,255,1);
+      }
+      &.activate{
+        background: rgba(255,255,255,1);
+      }
+      @extend .scssBFX;
+
+    }
+  }
+}
+
+@keyframes hero-logo-circle {
+  100% {
+    transform: rotate(1turn);
+  }
+}
+
+@keyframes hero-logo-circle-after {
+  100% {
+    transform: rotate(1turn);
+  }
+}

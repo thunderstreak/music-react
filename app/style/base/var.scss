@@ -1,0 +1,45 @@
+.scssBFX {
+    display: flex;
+}
+
+.scssBoxFlex {
+    @extend .scssBFX;
+    justify-content: space-between;
+    -webkit-justify-content: space-between;
+}
+
+.scssBoxFlexC {
+    @extend .scssBFX;
+    justify-content: center;
+    -webkit-justify-content: center;
+}
+
+.scssBoxFlexSB {
+    @extend .scssBFX;
+    justify-content: space-between;
+    -webkit-justify-content: space-between;
+}
+
+.scssBoxFlexSA {
+    @extend .scssBFX;
+    justify-content: space-around;
+    -webkit-justify-content: space-around;
+}
+
+.scssBoxFlexChild {
+    flex: 1;
+    -webkit-flex: 1;
+}
+
+/*box center*/
+.scssTransformCenter {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    transform-origin: 50% 50%;
+    -webkit-transform: translate(-50%, -50%);
+    -webkit-transform-origin: 50% 50%;
+}
+
+$red: red;

@@ -1,0 +1,19 @@
+html {
+  height: 100%;
+  body {
+    height: inherit;
+    -webkit-user-select: none;
+  }
+}
+#root {
+  transition: 0.5s;
+  height: inherit;
+  //background-image: radial-gradient(ellipse closest-side at 50% 50%, #393e44, #36383b 25%, #343233);
+  //background-repeat: no-repeat;
+  //background-size: 100% 100%;
+  //background-position: center -120px;
+}
+
+::-webkit-scrollbar {
+ //display: none;
+}
