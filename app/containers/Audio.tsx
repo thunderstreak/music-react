@@ -23,6 +23,8 @@ class AudioComponent extends Component<Partial<AudioProps>, AudioState> {
 
   AudioCtx = {} as AudioContext;
 
+  currentLyric = '';
+
   constructor(props: Readonly<Partial<AudioProps>>) {
     super(props);
     this.state = {

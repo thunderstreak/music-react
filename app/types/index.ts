@@ -36,3 +36,8 @@ export type EnhanceConnectType = ConnectedComponent<
     >
   >
 >;
+
+export interface RequestParamsType {
+  headers?: AnyType;
+  [name: string]: any;
+}

@@ -126,7 +126,7 @@ export const getElementWidth = (element: EventTarget | null): number => {
   return parseInt(e.width.replace('px', ''), 10);
 };
 
-const isType = (type: string) => (value: any) =>
+const isType = (type: string) => (value: never) =>
   Object.prototype.toString.call(value).includes(type);
 export default {
   isArray: isType('Array'),

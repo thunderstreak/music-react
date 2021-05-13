@@ -22,22 +22,17 @@ ipcMain.on('ipcRendererSongLyric', (event, songId) => {
     if (!error && response.statusCode === 200) {
       // 解码歌词
       const data = JSON.parse(body.match(/{(.+?)}/g)[0]);
-      console.log(decode);
-      const decodeLyric = decode(data.lyric);
+      const decodeLyric = decode(data?.lyric || '');
       let resLyric: string[] = [];
 
       try {
         resLyric = decodeLyric
           ? decodeLyric.split('[offset:0]')[1].split('\n')
           : [];
-      } catch (e) {
-        console.log(e);
       } finally {
         // 向ipcRenderer发送事件
         event.sender.send('ipcMainSongLyric', resLyric);
       }
-    } else {
-      console.log('error');
     }
   });
 });

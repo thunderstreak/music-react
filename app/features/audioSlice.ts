@@ -70,7 +70,7 @@ export const setQQMusicSongLyric = (params: ISongLyric): AppThunk => async (
 export const getQQMusicSongLyric = (params: SongId): AppThunk => async (
   dispatch
 ) => {
-  const { data } = await Apis.getQQMusicSongLyric(params);
+  const { data } = await Apis.getQQMusicSongLyric({ songmid: params });
   dispatch(setMusicSongLyric(data));
 };
 

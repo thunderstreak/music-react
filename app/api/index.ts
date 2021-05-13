@@ -1,5 +1,4 @@
 import axios from 'axios';
-import { AnyType } from '../types';
 import {
   NewQQMusicListParams,
   QQMusicListParams,
@@ -8,53 +7,71 @@ import {
   QQMusicSongLyricParams,
   QQMusicSongPlaySrc,
 } from './musicParams';
-import { QQMusicParams, QQMusicSearchKeyWords, SongId } from './middleware';
+import { SongId } from './middleware';
+import { wrapperGet } from './service';
+import {
+  setExtraExtensionParameter,
+  setRequestHeaderDecorator,
+} from '../utils/decorator-apply';
 
 class Apis {
-  getQQMusicList = (params: QQMusicParams) => {
-    return axios({
-      url: 'https://c.y.qq.com/v8/fcg-bin/fcg_v8_toplist_cp.fcg',
-      method: 'get',
-      params: { ...QQMusicListParams, ...params },
-    });
-  };
+  @setExtraExtensionParameter(QQMusicListParams)
+  getQQMusicList = wrapperGet(
+    'https://c.y.qq.com/v8/fcg-bin/fcg_v8_toplist_cp.fcg'
+  );
 
-  getNewQQMusicList = (params: AnyType) => {
-    return axios({
-      url: 'https://u.y.qq.com/cgi-bin/musics.fcg',
-      method: 'get',
-      params: { ...NewQQMusicListParams, ...params },
-    });
-  };
+  @setExtraExtensionParameter(NewQQMusicListParams)
+  getNewQQMusicList = wrapperGet('https://u.y.qq.com/cgi-bin/musics.fcg');
 
-  getQQMusicSearch = (params: QQMusicSearchKeyWords) => {
-    return axios({
-      url: 'https://c.y.qq.com/soso/fcgi-bin/client_search_cp',
-      method: 'GET',
-      params: {
-        ...QQMusicSearchParams,
-        ...params,
-      },
-    });
-  };
+  @setExtraExtensionParameter(QQMusicSearchParams)
+  getQQMusicSearch = wrapperGet(
+    'https://c.y.qq.com/soso/fcgi-bin/client_search_cp'
+  );
 
-  getQQMusicSongLyric = (params: SongId) => {
-    return axios({
-      url: `https://c.y.qq.com/lyric/fcgi-bin/fcg_query_lyric_new.fcg`,
-      method: 'get',
-      headers: QQMusicSongLyricHeaders,
-      params: { ...QQMusicSongLyricParams, songmid: params },
-    });
-  };
+  @setRequestHeaderDecorator(QQMusicSongLyricHeaders)
+  @setExtraExtensionParameter(QQMusicSongLyricParams)
+  getQQMusicSongLyric = wrapperGet(
+    'https://c.y.qq.com/lyric/fcgi-bin/fcg_query_lyric_new.fcg'
+  );
+
+  // getQQMusicList = (params: QQMusicParams) => {
+  //   return axios({
+  //     url: 'https://c.y.qq.com/v8/fcg-bin/fcg_v8_toplist_cp.fcg',
+  //     method: 'get',
+  //     params: { ...QQMusicListParams, ...params },
+  //   });
+  // };
+
+  // getNewQQMusicList = (params: AnyType) => {
+  //   return axios({
+  //     url: 'https://u.y.qq.com/cgi-bin/musics.fcg',
+  //     method: 'get',
+  //     params: { ...NewQQMusicListParams, ...params },
+  //   });
+  // };
+
+  // getQQMusicSearch = (params: QQMusicSearchKeyWords) => {
+  //   return axios({
+  //     url: 'https://c.y.qq.com/soso/fcgi-bin/client_search_cp',
+  //     method: 'GET',
+  //     params: { ...QQMusicSearchParams, ...params },
+  //   });
+  // };
+
+  // getQQMusicSongLyric = (params: SongId) => {
+  //   return axios({
+  //     url: `https://c.y.qq.com/lyric/fcgi-bin/fcg_query_lyric_new.fcg`,
+  //     method: 'get',
+  //     headers: QQMusicSongLyricHeaders,
+  //     params: { ...QQMusicSongLyricParams, songmid: params },
+  //   });
+  // };
 
   getQQMusicSongPlayBasicSrc = (params: SongId) => {
     return axios({
       url: 'https://u.y.qq.com/cgi-bin/musicu.fcg',
       method: 'get',
-      params: {
-        format: 'json',
-        data: QQMusicSongPlaySrc(params),
-      },
+      params: { format: 'json', data: QQMusicSongPlaySrc(params) },
     });
   };
 

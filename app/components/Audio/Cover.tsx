@@ -62,7 +62,7 @@ class AudioCover extends React.PureComponent<AudioCoverProps, AudioCoverState> {
   }
 
   render() {
-    const { albumSrc, songName, singerName } = this.props;
+    const { albumSrc = '', songName = '', singerName = '' } = this.props;
     const { handlerPlayPaused } = this.props;
     return (
       <div className="hero-play-audio">
