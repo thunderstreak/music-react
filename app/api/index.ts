@@ -34,6 +34,9 @@ class Apis {
     'https://c.y.qq.com/lyric/fcgi-bin/fcg_query_lyric_new.fcg'
   );
 
+  // @setExtraExtensionParameter({ format: 'json', })
+  // getQQMusicSongPlayBasicSrc = wrapperGet('https://u.y.qq.com/cgi-bin/musicu.fcg')
+
   // getQQMusicList = (params: QQMusicParams) => {
   //   return axios({
   //     url: 'https://c.y.qq.com/v8/fcg-bin/fcg_v8_toplist_cp.fcg',

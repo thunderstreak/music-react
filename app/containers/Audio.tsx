@@ -5,10 +5,11 @@ import { ipcRenderer } from 'electron';
 import { enhanceConnect, getElementWidth, parseLyric } from '../utils';
 import { PropsDispatch } from '../types';
 import AudioHeader from '../components/Audio/Header';
-import AudioArea from '../components/audioArea';
+import AudioArea from '../components/Audio/Area';
 import AudioCover from '../components/Audio/Cover';
 import AudioPanel from '../components/Audio/Panel';
 import AudioList from '../components/Audio/List';
+import AudioLyric from '../components/Audio/Lyric';
 import { PlayType } from '../api/middleware';
 
 interface AudioProps extends RouteComponentProps, PropsDispatch {}
@@ -16,6 +17,7 @@ interface AudioState {
   audioVoice: boolean;
   audioIsPlay: boolean;
   audioVoiceVal: number;
+  currPlayTime: number;
 }
 @enhanceConnect('audio')
 class AudioComponent extends Component<Partial<AudioProps>, AudioState> {
@@ -31,6 +33,7 @@ class AudioComponent extends Component<Partial<AudioProps>, AudioState> {
       audioVoice: false,
       audioIsPlay: true,
       audioVoiceVal: 100,
+      currPlayTime: 0,
     };
   }
 
@@ -170,8 +173,13 @@ class AudioComponent extends Component<Partial<AudioProps>, AudioState> {
     // this.isPlay = true; // 是否播放状态为播放
   }
 
+  @autobind
+  handlerStateAscension(time: number) {
+    this.setState({ currPlayTime: time });
+  }
+
   render() {
-    const { audioVoice, audioIsPlay, audioVoiceVal } = this.state;
+    const { audioVoice, audioIsPlay, audioVoiceVal, currPlayTime } = this.state;
     const {
       propsState: { currentSong = {}, currentLyric },
     } = this.props;
@@ -198,8 +206,13 @@ class AudioComponent extends Component<Partial<AudioProps>, AudioState> {
           handlerPlayVoice={this.handlerPlayVoice}
           handlerChangeVoice={this.handlerChangeVoice}
           handlerAdjustProgress={this.handlerAdjustProgress}
+          handlerStateAscension={this.handlerStateAscension}
         />
         <AudioList />
+        <AudioLyric
+          AudioPlayer={this.AudioPlayer}
+          currPlayTime={currPlayTime}
+        />
         {/* <Link to={routes.COUNTER}>to Counter {name}</Link> */}
       </div>
     );

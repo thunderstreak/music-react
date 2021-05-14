@@ -14,7 +14,11 @@ export type ActionType = {
 };
 
 export type PropsState = AnyType;
-export type PropsDispatch = AnyType;
+export interface PropsDispatch {
+  propsState: any;
+  propsDispatch: any;
+  dispatch: Dispatch;
+}
 
 export function spreadAssign<T extends RecordType>(t: any): T {
   return { ...(t as RecordType) } as T;

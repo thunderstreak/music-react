@@ -1,3 +1,5 @@
+import { AnyType } from '../types';
+
 export interface QQMusicSearchKeyWords {
   w: string;
 }
@@ -23,6 +25,7 @@ export const transformGeneralSongInfoToAppointSongData = (
 export interface ISongLyric {
   lyric: string;
   lyricTime: number;
+  index: number;
 }
 export interface QQMusicParams {
   type?: string;
@@ -48,5 +51,14 @@ export interface SongType {
   singername: string;
   singer: any[];
   docid: number;
+}
+export interface IListSongInfo extends AnyType, SongType {
+  name?: string;
+}
+export interface IPlayParams {
+  audioBuffered: number;
+  songDuration: number;
+  currPlayTime: number;
+  audioProgress: number;
 }
 export default {};

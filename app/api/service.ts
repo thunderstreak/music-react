@@ -25,7 +25,7 @@ service.interceptors.response.use(
   responseErrorInterceptors
 );
 
-const handlerRequestParams = (params: RequestParamsType): RequestParamsType => {
+const handlerRequestParams = (params: RequestParamsType): AnyType => {
   let data = {};
   if (isObject(params)) {
     const { headers = {} } = params;

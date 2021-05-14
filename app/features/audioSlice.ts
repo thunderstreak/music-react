@@ -10,15 +10,18 @@ import {
   transformGeneralKeyWordsToAppointSearchKeyWords,
   transformGeneralSongInfoToAppointSongData,
   ISongLyric,
+  IListSongInfo,
+  IPlayParams,
 } from '../api/middleware';
 
 const audioSlice = createSlice({
   name: 'audio',
   initialState: {
-    musicList: [] as any,
-    musicSearch: [] as any,
-    currentLyric: ([] as unknown) as ISongLyric,
+    musicList: [] as IListSongInfo[],
+    musicSearch: [] as IListSongInfo[],
+    currentLyric: [] as ISongLyric[],
     currentSong: {} as ISongInfo,
+    currentPlay: {} as IPlayParams, // 当前播放的一些参数
   },
   reducers: {
     setMusicSongLyric: (state, { payload }) => {
@@ -33,6 +36,9 @@ const audioSlice = createSlice({
     setCurrentSong: (state, { payload }) => {
       state.currentSong = { ...state.currentSong, ...payload };
     },
+    setCurrentPlay: (state, { payload }) => {
+      state.currentPlay = { ...state.currentPlay, ...payload };
+    },
   },
 });
 
@@ -41,6 +47,7 @@ const {
   setMusicList,
   setMusicSearch,
   setCurrentSong,
+  setCurrentPlay,
 } = audioSlice.actions;
 
 export const getMusicSearch = (params: string): AppThunk => async (
@@ -109,8 +116,8 @@ export const getMusicList = (params: QQMusicParams): AppThunk => async (
     data: { songlist },
   } = await Apis.getQQMusicList(params);
   const usableList = songlist
-    .map((x: any) => x.data)
-    .filter((x: any) => x.pay.payplay !== 1);
+    .map((x: IListSongInfo) => x.data)
+    .filter((x: IListSongInfo) => x.pay.payplay !== 1);
 
   dispatch(setMusicList(usableList));
   const transformSongData = transformGeneralSongInfoToAppointSongData(
@@ -148,6 +155,13 @@ export const setCurrentSongData = (data: SongType): AppThunk => async (
   const transformSongData = transformGeneralSongInfoToAppointSongData(data);
   const srcData = await getQQMusicPlaySongSrc(transformSongData.songId);
   dispatch(setCurrentSong({ ...transformSongData, ...srcData }));
+};
+
+export const setCurrentPlayParams = (data: IPlayParams): AppThunk => async (
+  dispatch
+) => {
+  console.log(data);
+  dispatch(setCurrentPlay(data));
 };
 
 export default audioSlice.reducer;

@@ -593,16 +593,18 @@
   }
 
   // 播放列表
-  &:hover .hero-box-list{
-    left: 0;
-  }
+  //&:hover .hero-box-list{
+  //  left: 0;
+  //}
+
+  // 播放列表
   .hero-box-list{
     width: 300px;
     //background: #fff;
     position: absolute;
     top: 40px;
     bottom: 70px;
-    left: -300px;
+    left: 0;
     z-index: 3;
     overflow: auto;
     transition: 0.25s;
@@ -624,6 +626,29 @@
       }
       @extend .scssBFX;
 
+    }
+  }
+
+  // 歌词列表
+  &-lyric{
+    position: absolute;
+    top: 40px;
+    right: 0;
+    bottom: 70px;
+    width: 300px;
+    overflow: auto;
+    z-index: 3;
+    &::-webkit-scrollbar{
+      display: none;
+    }
+    &-li{
+      font-size: 15px;
+      transition: 0.5s;
+      &.activate{
+        color: #fff;
+        font-size: 15px;
+        line-height: 1.5;
+      }
     }
   }
 }

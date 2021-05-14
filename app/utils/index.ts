@@ -105,6 +105,7 @@ export const parseLyric = (lyric: string): ISongLyric[] => {
     playSongLyric.push({
       lyric: '当前暂无歌词显示',
       lyricTime: 0,
+      index: 0,
     });
     return playSongLyric;
   }
@@ -114,6 +115,7 @@ export const parseLyric = (lyric: string): ISongLyric[] => {
         playSongLyric.push({
           lyric: lyric[i].split('[')[1].split(']')[1],
           lyricTime: getTime(lyric[i].split('[')[1].split(']')[0]),
+          index: i,
         });
       }
     }
@@ -126,7 +128,7 @@ export const getElementWidth = (element: EventTarget | null): number => {
   return parseInt(e.width.replace('px', ''), 10);
 };
 
-const isType = (type: string) => (value: never) =>
+const isType = (type: string) => (value: unknown) =>
   Object.prototype.toString.call(value).includes(type);
 export default {
   isArray: isType('Array'),

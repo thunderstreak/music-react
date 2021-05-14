@@ -5,11 +5,17 @@ import React, {
   useEffect,
   useState,
 } from 'react';
-import { RouteComponentProps, withRouter } from 'react-router';
-import { transformTime } from '../../utils';
-import { ISongLyric, PlayType, TargetValue } from '../../api/middleware';
+// import { RouteComponentProps, withRouter } from 'react-router';
+import { enhanceConnect, transformTime } from '../../utils';
+import {
+  IPlayParams,
+  ISongLyric,
+  PlayType,
+  TargetValue,
+} from '../../api/middleware';
+import { PropsDispatch } from '../../types';
 
-interface PanelProps extends RouteComponentProps {
+interface PanelProps extends PropsDispatch {
   AudioPlayer: HTMLAudioElement;
   currentLyric: ISongLyric[];
   audioVoice: boolean;
@@ -20,6 +26,7 @@ interface PanelProps extends RouteComponentProps {
   handlerPlayVoice: () => void;
   handlerChangeVoice: (e: SyntheticEvent<TargetValue>) => void;
   handlerAdjustProgress: (e: BaseSyntheticEvent<MouseEvent>) => void;
+  handlerStateAscension: (time: number) => void;
 }
 const initialAudioPlayParams = {
   audioBuffered: 0,
@@ -39,8 +46,11 @@ function AudioPanel(props: PanelProps): JSX.Element {
     handlerPlayVoice,
     handlerChangeVoice,
     handlerAdjustProgress,
+    handlerStateAscension,
   } = props;
-  const [audioParams, setAudioParams] = useState(initialAudioPlayParams);
+  const [audioParams, setAudioParams] = useState<IPlayParams>(
+    initialAudioPlayParams
+  );
   const [lyric, setLyric] = useState<string>('');
 
   const setCurrentLyric = useCallback(() => {
@@ -54,29 +64,35 @@ function AudioPanel(props: PanelProps): JSX.Element {
 
   useEffect(() => {
     AudioPlayer.ontimeupdate = () => {
-      if (AudioPlayer.readyState === 4) {
+      const { readyState, buffered, duration, currentTime } = AudioPlayer;
+      if (readyState === 4) {
         // 歌曲缓冲百分值
-        const audioBuffered = Math.round(
-          (AudioPlayer.buffered.end(0) / AudioPlayer.duration) * 100
-        );
-        const songDuration = AudioPlayer.duration; // 音乐总时长(秒)
+        const audioBuffered = Math.round((buffered.end(0) / duration) * 100);
+        const songDuration = duration; // 音乐总时长(秒)
 
         // 根据当前播放时间设置播放进度条百分值元素
-        const currPlayTime = parseInt(String(AudioPlayer.currentTime), 10);
+        const currPlayTime = parseInt(String(currentTime), 10);
         const audioProgress = parseFloat(
           String((currPlayTime / songDuration) * 100)
         );
         setCurrentLyric();
-        setAudioParams({
-          ...audioParams,
+        const playParams = {
           audioBuffered,
           songDuration,
           currPlayTime,
           audioProgress,
-        });
+        };
+        setAudioParams({ ...audioParams, ...playParams });
+        handlerStateAscension(currPlayTime);
       }
     };
-  }, [AudioPlayer, audioParams, currentLyric, setCurrentLyric]);
+  }, [
+    AudioPlayer,
+    audioParams,
+    currentLyric,
+    setCurrentLyric,
+    handlerStateAscension,
+  ]);
   const {
     audioBuffered,
     songDuration,
@@ -156,4 +172,4 @@ function AudioPanel(props: PanelProps): JSX.Element {
   );
 }
 
-export default withRouter(AudioPanel);
+export default enhanceConnect('audio')(AudioPanel);
