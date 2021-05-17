@@ -73,7 +73,7 @@ export const getMockDecorator = (mockFn) =>
   });
 
 // set request header config
-export const setRequestHeaderDecorator = (headers) =>
+export const setRequestHeaderDecorator = (...headers) =>
   createDecorator((fn) => (...args) => {
     return fn(...[...args, { headers }]);
   });
@@ -112,5 +112,5 @@ export const getConfirmDecorator = (...config) => (handle) =>
     return null;
   });
 
-export const setExtraExtensionParameter = (...params) =>
-  createDecorator((fn) => (...args) => fn(...[...args, ...params]));
+export const setExtraExtensionParameter = (...extras) =>
+  createDecorator((fn) => (...args) => fn(...[...args, { extras }]));

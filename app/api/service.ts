@@ -1,5 +1,4 @@
 import axios from 'axios';
-import { omit } from 'lodash';
 import utils from '../utils';
 import { AnyType, RequestParamsType } from '../types';
 import {
@@ -25,29 +24,42 @@ service.interceptors.response.use(
   responseErrorInterceptors
 );
 
-const handlerRequestParams = (params: RequestParamsType): AnyType => {
-  let data = {};
-  if (isObject(params)) {
-    const { headers = {} } = params;
-    data = headers ? omit(params, 'headers') : params;
-  } else if (isArray(params)) {
-    // 针对传入多个参数的情况需要合并成一个参数
-    data = params.reduce(
-      (prev: { [x: string]: any }, curr: { [x: string]: any }) => {
-        Object.keys(curr).forEach((key) => {
-          prev[key] = curr[key];
-        });
-        return prev;
-      },
-      {}
-    );
+const handlerArrayToObject = (data: AnyType) =>
+  data.reduce(
+    (prev: { [x: string]: unknown }, curr: { [x: string]: unknown }) => {
+      Object.keys(curr).forEach((x: string) => {
+        prev[x] = curr[x];
+      });
+      return prev;
+    },
+    {}
+  );
+const handlerRequestParams = (data: RequestParamsType[]): AnyType => {
+  const [first, ...other] = data;
+  let temp = {} as RequestParamsType;
+  let params = {};
+
+  // 针对传入的额外扩展参数和header参数统一合并
+  if (other.length) {
+    temp = handlerArrayToObject(other);
+    if (temp.extras) {
+      temp.extras = { ...handlerArrayToObject(temp.extras) };
+    }
   }
-  return data;
+
+  if (isArray(first)) {
+    params = first.map((x: AnyType) => ({ ...x, ...temp.extras }));
+  } else if (isObject(first)) {
+    params = { ...first, ...temp.extras };
+  }
+  return params;
 };
-const handlerSetHeader = (data: RequestParamsType = {}): AnyType => {
+const handlerSetHeader = (data: RequestParamsType[]): AnyType => {
+  const other = data.splice(1);
+  const params = handlerArrayToObject(other);
   let headers = {};
-  if (data && data.headers) {
-    headers = { headers: data.headers };
+  if (params.headers) {
+    headers = { ...handlerArrayToObject(params.headers) };
   }
   return headers;
 };

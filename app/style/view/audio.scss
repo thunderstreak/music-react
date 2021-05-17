@@ -641,13 +641,16 @@
     &::-webkit-scrollbar{
       display: none;
     }
-    &-li{
-      font-size: 15px;
+    &-wrapper{
       transition: 0.5s;
-      &.activate{
-        color: #fff;
+      &-li{
         font-size: 15px;
-        line-height: 1.5;
+        transition: 0.5s;
+        padding: 5px 0;
+        &.activate{
+          color: #fff;
+          font-size: 15px;
+        }
       }
     }
   }
