@@ -12,22 +12,27 @@ interface LyricProps extends PropsDispatch {
 
 @enhanceConnect('audio')
 export default class AudioLyric extends Component<Partial<LyricProps>> {
-  wrapper: HTMLDivElement | null | undefined;
+  scrollWrapper: HTMLDivElement | null | undefined;
 
   scrollThreshold = 7;
 
+  scrollTranslateY = 0;
+
   scrollActivate = true;
+
+  scrollIndex = 0;
 
   scrollTimer: NodeJS.Timeout | undefined;
 
   componentDidMount() {
-    if (this.wrapper) {
-      this.wrapper.onscroll = throttle((e: Event) => {
-        console.log(e.currentTarget);
-
-        // this.scrollActivate = false;
+    if (this.scrollWrapper) {
+      this.scrollWrapper.onscroll = throttle(() => {
+        this.scrollTranslateY = 0;
+        // if (this.scrollTimer) {
+        //   clearTimeout(this.scrollTimer);
+        //   return;
+        // }
         // this.scrollTimer = setTimeout(() => {
-        //   this.scrollActivate = true;
         //   if (this.scrollTimer) {
         //     clearTimeout(this.scrollTimer);
         //   }
@@ -42,26 +47,29 @@ export default class AudioLyric extends Component<Partial<LyricProps>> {
       currPlayTime = 0,
       propsState: { currentLyric = [] },
     } = this.props;
-    let tempIndex = 0;
     const findIndex = currentLyric.findIndex(
-      (x: ISongLyric) => x.lyricTime > currPlayTime
+      (x: ISongLyric) => x.lyricTime === currPlayTime
     );
     if (findIndex !== -1) {
-      tempIndex = findIndex - 1;
+      this.scrollIndex = findIndex;
     }
-    const translateY =
-      tempIndex > this.scrollThreshold
-        ? (tempIndex - this.scrollThreshold) * 30
-        : 0;
+    const endOffset = this.scrollTranslateY * 30;
+    const startOffset = (findIndex - this.scrollThreshold) * 30;
+    this.scrollTranslateY =
+      this.scrollIndex > this.scrollThreshold ? startOffset : endOffset;
     if (this.scrollActivate) {
-      this.wrapper?.scrollTo(0, translateY);
+      // this.wrapper?.scrollTo(0, translateY);
     }
     return (
-      <div className="hero-box-lyric-wrapper">
+      <div
+        className="hero-box-lyric-wrapper"
+        style={{ transform: `translateY(-${this.scrollTranslateY}px)` }}
+      >
         {currentLyric.map((x: ISongLyric, i: number) => (
           <div
+            data-index={i}
             className={`hero-box-lyric-wrapper-li ${
-              i === tempIndex ? 'activate' : ''
+              i === this.scrollIndex ? 'activate' : ''
             }`}
             key={`${x.lyricTime}-${x.index}`}
           >
@@ -78,7 +86,7 @@ export default class AudioLyric extends Component<Partial<LyricProps>> {
       <div
         className="hero-box-lyric"
         ref={(ref) => {
-          this.wrapper = ref;
+          this.scrollWrapper = ref;
         }}
       >
         {handleLyricListRender()}

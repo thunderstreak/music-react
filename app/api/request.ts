@@ -20,12 +20,15 @@ ipcMain.on('ipcRendererSongLyric', (event, songId) => {
   };
   request(options, (error, response, body) => {
     if (!error && response.statusCode === 200) {
-      // 解码歌词
-      const data = JSON.parse(body.match(/{(.+?)}/g)[0]);
-      const decodeLyric = decode(data?.lyric || '');
       let resLyric: string[] = [];
 
       try {
+        // 解码歌词
+        const data = JSON.parse(body.match(/{(.+?)}/g)[0]);
+        let decodeLyric = '';
+        if (data && data.lyric) {
+          decodeLyric = decode(data.lyric);
+        }
         resLyric = decodeLyric
           ? decodeLyric.split('[offset:0]')[1].split('\n')
           : [];
