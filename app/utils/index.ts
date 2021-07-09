@@ -41,11 +41,13 @@ export const debounce = (wait: number) => (
   descriptor: any
 ) => {
   const fn = descriptor.value;
-  let timer: any = null;
-  descriptor.value = function (...args: any[]) {
+  let timer: NodeJS.Timeout | null = null;
+  descriptor.value = function newDescriptor(...args: any[]) {
     const e = args[0];
     e.persist();
-    clearTimeout(timer);
+    if (timer) {
+      clearTimeout(timer);
+    }
     timer = setTimeout(() => {
       return fn.apply(this, args);
     }, wait);
@@ -60,7 +62,7 @@ export const throttle = (delay: number) => (
 ) => {
   const fn = descriptor.value;
   let timer: NodeJS.Timeout | number | null = null;
-  descriptor.value = function (...args: any[]) {
+  descriptor.value = function newDescriptor(...args: any[]) {
     const e = args[0];
     e.persist();
     if (!timer) {

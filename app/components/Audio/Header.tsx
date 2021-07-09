@@ -1,4 +1,5 @@
 import React, { BaseSyntheticEvent } from 'react';
+import { createPortal } from 'react-dom';
 import { ipcRenderer } from 'electron';
 import { RouteComponentProps } from 'react-router';
 import { autobind } from 'core-decorators';
@@ -7,9 +8,11 @@ import { PropsDispatch } from '../../types';
 import { SongType } from '../../api/middleware';
 
 interface AudioHeaderProps extends RouteComponentProps, PropsDispatch {}
+
 interface AudioHeaderState {
   searchSongList: SongType[];
   searchSongShow: boolean;
+  searchValue?: string;
 }
 
 @enhanceConnect('audio')
@@ -24,12 +27,22 @@ export default class AudioHeader extends React.Component<
     this.state = {
       searchSongList: [],
       searchSongShow: false,
+      searchValue: '',
     };
   }
 
   componentDidMount() {}
 
-  // eslint-disable-next-line react/sort-comp
+  handlerOperatorWindow = (type: string) => {
+    ipcRenderer.send(`window-${type}`);
+  };
+
+  @autobind
+  handlerInput(e: BaseSyntheticEvent) {
+    const { value } = e.target;
+    this.setState({ searchValue: value });
+  }
+
   @autobind
   @debounce(1000)
   async handlerSearch(e: BaseSyntheticEvent) {
@@ -38,17 +51,27 @@ export default class AudioHeader extends React.Component<
       propsDispatch: { getMusicSearch },
     } = this.props;
     const data = await getMusicSearch(value);
-    this.setState({ searchSongList: data, searchSongShow: !!data.length });
+    this.setState({
+      searchSongList: data,
+      searchSongShow: !!data.length,
+    });
   }
 
   @autobind
-  handlerBlur() {
-    this.setState({ searchSongShow: false });
+  handlerHideList(event: BaseSyntheticEvent) {
+    event.persist();
+    event.stopPropagation();
+    const {
+      target: { tagName },
+    } = event;
+    if (tagName === 'DIV') {
+      this.setState({ searchSongShow: false });
+    }
   }
 
   @autobind
   handlerFocus() {
-    const { searchSongShow, searchSongList } = this.state as AudioHeaderState;
+    const { searchSongShow, searchSongList } = this.state;
     const nextSearchSongShow = !!(!searchSongShow && searchSongList.length);
     this.setState({ searchSongShow: nextSearchSongShow });
   }
@@ -56,49 +79,52 @@ export default class AudioHeader extends React.Component<
   @autobind
   handlerPlaySong(data: SongType) {
     const {
-      propsDispatch: { getQQMusicPlaySongSrc },
+      propsDispatch: { setCurrentSongData },
     } = this.props;
-    getQQMusicPlaySongSrc(data.songmid);
+    setCurrentSongData(data);
+    this.setState({ searchSongShow: false, searchValue: data.songname });
   }
 
-  handlerOperatorWindow = (type: string) => {
-    ipcRenderer.send(`window-${type}`);
-  };
-
   render() {
-    const { searchSongList, searchSongShow } = this.state as AudioHeaderState;
+    const { searchSongList, searchSongShow, searchValue } = this.state;
     return (
-      <section className="hero-gesture">
+      <div className="hero-gesture">
         <div className="hero-gesture-logo" title="little" />
-        <div className="hero-gesture-box">
+        {/* eslint-disable-next-line jsx-a11y/click-events-have-key-events,jsx-a11y/no-static-element-interactions */}
+        <div className="hero-gesture-box" onClick={this.handlerHideList}>
           <div className="hero-gesture-search">
             <input
               className="hero-gesture-search-ipt"
               type="text"
               placeholder="搜索歌曲/歌手"
-              onInput={this.handlerSearch}
-              onBlur={this.handlerBlur}
+              value={searchValue}
+              onInput={this.handlerInput}
+              onChange={this.handlerSearch}
               onFocus={this.handlerFocus}
             />
-            {searchSongShow ? (
-              <div className="hero-gesture-search-box">
-                <ul className="hero-gesture-search-res">
+          </div>
+        </div>
+        {searchSongShow
+          ? createPortal(
+              // eslint-disable-next-line jsx-a11y/click-events-have-key-events,jsx-a11y/no-static-element-interactions
+              <div className="hero-song-list" onClick={this.handlerHideList}>
+                <ul className="hero-song-list-res">
                   {searchSongList.map((x: SongType) => (
                     // eslint-disable-next-line jsx-a11y/click-events-have-key-events,jsx-a11y/no-noninteractive-element-interactions
                     <li
                       key={x.docid}
-                      className="res-list"
-                      onClick={() => this.handlerPlaySong(x)}
+                      className="hero-song-list-res-list"
+                      onDoubleClick={() => this.handlerPlaySong(x)}
                     >
                       {x.singer.length ? x.singer[0].name : x.singername}-
                       {x.songname}
                     </li>
                   ))}
                 </ul>
-              </div>
-            ) : null}
-          </div>
-        </div>
+              </div>,
+              window.document.body
+            )
+          : null}
         {/* eslint-disable-next-line jsx-a11y/click-events-have-key-events,jsx-a11y/no-static-element-interactions */}
         <div
           className="hero-gesture-hide hero-gesture-base"
@@ -111,7 +137,7 @@ export default class AudioHeader extends React.Component<
           title="关闭"
           onClick={() => this.handlerOperatorWindow('close')}
         />
-      </section>
+      </div>
     );
   }
 }

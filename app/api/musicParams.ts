@@ -81,7 +81,7 @@ export const QQMusicSearchParams = {
   notice: '0',
   platform: 'h5',
   needNewCode: '1',
-  w: '',
+  // w: '',
   zhidaqu: '1',
   catZhida: '1',
   t: '0',

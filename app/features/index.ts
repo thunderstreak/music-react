@@ -37,11 +37,12 @@ export const spreadActions = (target?: string) => {
     const x = filterModules[i];
     const nameSpace = x.replace('Slice', '');
     const nameReduce = filterModulesActions(otherModules[x]);
+    const actionRes = spreadAssign(nameReduce);
     if (target && nameSpace === target) {
-      action = spreadAssign(nameReduce);
+      action = actionRes;
       break;
     } else {
-      action[nameSpace] = spreadAssign(nameReduce);
+      action[nameSpace] = actionRes;
     }
   }
   return action;

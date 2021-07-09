@@ -160,7 +160,6 @@ export const setCurrentSongData = (data: SongType): AppThunk => async (
 export const setCurrentPlayParams = (data: IPlayParams): AppThunk => async (
   dispatch
 ) => {
-  console.log(data);
   dispatch(setCurrentPlay(data));
 };
 

@@ -156,7 +156,7 @@ class AudioComponent extends Component<Partial<AudioProps>, AudioState> {
 
     // 指定播放时间开始播放
     this.AudioPlayer.currentTime = parseInt(String(percentage * duration), 10);
-    this.AudioPlayer.play().catch(console.log); // 开始播放音乐
+    this.AudioPlayer.play().catch(console.error); // 开始播放音乐
 
     // 拖动进度条显示当前歌词
     const currPlayTime = parseInt(String(this.AudioPlayer.currentTime), 10);

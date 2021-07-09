@@ -31,8 +31,7 @@ class AudioCover extends React.PureComponent<AudioCoverProps, AudioCoverState> {
 
   componentDidUpdate(
     prevProps: Readonly<AudioCoverProps>,
-    _prevState: Readonly<AudioCoverState>,
-    _snapshot?: any
+    _prevState: Readonly<AudioCoverState>
   ) {
     const { audioIsPlay: PrevAudioIsPlay } = prevProps;
     const { audioIsPlay: NextAudioIsPlay } = this.props;
@@ -42,6 +41,12 @@ class AudioCover extends React.PureComponent<AudioCoverProps, AudioCoverState> {
       } else if (this.albumInterval != null) {
         cancelAnimationFrame(this.albumInterval);
       }
+    }
+  }
+
+  componentWillUnmount() {
+    if (this.albumInterval != null) {
+      cancelAnimationFrame(this.albumInterval);
     }
   }
 

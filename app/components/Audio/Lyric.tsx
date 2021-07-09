@@ -12,7 +12,7 @@ interface LyricProps extends PropsDispatch {
 
 @enhanceConnect('audio')
 export default class AudioLyric extends Component<Partial<LyricProps>> {
-  scrollWrapper: HTMLDivElement | null | undefined;
+  scrollWrapper: HTMLElement | null | undefined;
 
   scrollThreshold = 7;
 
