@@ -16,7 +16,7 @@ export const enhanceConnect: any = (reducer = '') => (
 ): EnhanceConnectType => {
   return connect(
     (state: StateFromReducersMapObject<AnyType>) => {
-      const propsState = spreadAssign(state[reducer] ? state[reducer] : state);
+      const propsState = spreadAssign(state[reducer] || state);
       return { propsState };
     },
     (dispatch: Dispatch) => {

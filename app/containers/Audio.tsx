@@ -209,10 +209,7 @@ class AudioComponent extends Component<Partial<AudioProps>, AudioState> {
           handlerStateAscension={this.handlerStateAscension}
         />
         <AudioList />
-        <AudioLyric
-          AudioPlayer={this.AudioPlayer}
-          currPlayTime={currPlayTime}
-        />
+        <AudioLyric currPlayTime={currPlayTime} />
         {/* <Link to={routes.COUNTER}>to Counter {name}</Link> */}
       </div>
     );

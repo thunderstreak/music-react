@@ -6,7 +6,7 @@ import { ISongLyric } from '../../api/middleware';
 import { PropsDispatch } from '../../types';
 
 interface LyricProps extends PropsDispatch {
-  AudioPlayer: HTMLAudioElement;
+  // AudioPlayer: HTMLAudioElement;
   currPlayTime: number;
 }
 
@@ -38,6 +38,17 @@ export default class AudioLyric extends Component<Partial<LyricProps>> {
         //   }
         // }, 3000);
       }, 1000);
+    }
+  }
+
+  componentDidUpdate(
+    _prevProps: Readonly<Partial<LyricProps>>,
+    _prevState: Readonly<unknown>,
+    _snapshot?: any
+  ) {
+    const { currPlayTime } = this.props;
+    if (!currPlayTime) {
+      this.scrollTranslateY = 0;
     }
   }
 
