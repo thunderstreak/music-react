@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, SyntheticEvent } from 'react';
 import { autobind } from 'core-decorators';
 import throttle from 'lodash/throttle';
 import { enhanceConnect } from '../../utils';
@@ -68,8 +68,9 @@ export default class AudioLyric extends Component<Partial<LyricProps>> {
     const startOffset = (findIndex - this.scrollThreshold) * 30;
     this.scrollTranslateY =
       this.scrollIndex > this.scrollThreshold ? startOffset : endOffset;
-    if (this.scrollActivate) {
+    if (!this.scrollActivate) {
       // this.wrapper?.scrollTo(0, translateY);
+      this.scrollWrapper?.scrollTo(0, 0);
     }
     return (
       <div
@@ -91,14 +92,22 @@ export default class AudioLyric extends Component<Partial<LyricProps>> {
     );
   }
 
+  @autobind
+  handleMouseEvent(e: SyntheticEvent) {
+    const { type } = e;
+    this.scrollActivate = type === 'mouseenter';
+  }
+
   render() {
-    const { handleLyricListRender } = this;
+    const { handleLyricListRender, handleMouseEvent } = this;
     return (
       <div
         className="hero-box-lyric"
         ref={(ref) => {
           this.scrollWrapper = ref;
         }}
+        onMouseEnter={handleMouseEvent}
+        onMouseLeave={handleMouseEvent}
       >
         {handleLyricListRender()}
       </div>
