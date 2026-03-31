@@ -50,10 +50,7 @@ async fn get_song_lyric(song_id: String) -> Result<Vec<String>, String> {
         song_id
     );
 
-    let client = reqwest::Client::builder()
-        .danger_accept_invalid_certs(true)
-        .build()
-        .map_err(|e| e.to_string())?;
+    let client = reqwest::Client::new();
 
     let body = client
         .get(&url)
