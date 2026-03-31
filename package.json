@@ -4,6 +4,10 @@
   "description": "Electron application boilerplate based on React, React Router, Webpack, React Hot Loader for rapid application development",
   "scripts": {
     "build": "concurrently \"yarn build-main\" \"yarn build-renderer\"",
+    "tauri:build-renderer": "cross-env NODE_ENV=production webpack --config ./configs/webpack.config.tauri.babel.js --colors",
+    "tauri:dev-renderer": "cross-env NODE_ENV=development webpack-dev-server --config configs/webpack.config.renderer.dev.babel.js --port 3000",
+    "tauri:build": "yarn tauri:build-renderer && tauri build --no-bundle && cp src-tauri/target/release/app music-react",
+    "tauri:dev": "tauri dev",
     "build-dll": "cross-env NODE_ENV=development webpack --config ./configs/webpack.config.renderer.dev.dll.babel.js --colors",
     "build-e2e": "cross-env E2E_BUILD=true yarn build",
     "build-main": "cross-env NODE_ENV=production webpack --config ./configs/webpack.config.main.prod.babel.js --colors",
@@ -284,12 +288,14 @@
     "@fortawesome/fontawesome-free": "^5.15.0",
     "@hot-loader/react-dom": "^16.13.0",
     "@reduxjs/toolkit": "^1.4.0",
+    "@tauri-apps/api": "2",
     "@types/request": "^2.48.5",
     "connected-react-router": "^6.6.1",
     "electron-debug": "^3.1.0",
     "electron-log": "^4.2.4",
     "electron-updater": "^4.3.4",
     "history": "^4.7.2",
+    "html-webpack-plugin": "4",
     "js-base64": "^3.6.0",
     "react": "^16.13.1",
     "react-dom": "^16.12.0",
@@ -300,6 +306,7 @@
     "redux-thunk": "^2.3.0",
     "regenerator-runtime": "^0.13.5",
     "request": "^2.88.2",
+    "sass": "^1.98.0",
     "source-map-support": "^0.5.19"
   },
   "devEngines": {
